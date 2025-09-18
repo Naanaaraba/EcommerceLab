@@ -19,11 +19,15 @@ require_once '../controllers/user_controller.php';
 $name = $_POST['name'];
 $email = $_POST['email'];
 $password = $_POST['password'];
+$country = $_POST['country'];
+$city = $_POST['city'];
 $phone_number = $_POST['phone_number'];
 $role = $_POST['role'];
 
-$user_id = register_user_ctr($name, $email, $password, $phone_number, $role);
 
+$user_id = register_user_ctr($name, $email, $password, $country, $city, $phone_number, $role);
+//echo json_encode([$name, $email, $password, $phone_number, $role]);
+//exit();
 if ($user_id) {
     $response['status'] = 'success';
     $response['message'] = 'Registered successfully';

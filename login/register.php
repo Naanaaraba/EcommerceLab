@@ -135,22 +135,31 @@
                         <h4>Register</h4>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="" class="mt-4" id="register-form">
+                        <form method="POST" class="mt-4" id="register-form">
                             <div class="mb-3">
                                 <label for="name" class="form-label">Name <i class="fa fa-user"></i></label>
-                                <input type="text" class="form-control animate__animated animate__fadeInUp" id="name" name="name" required>
+                                <input id="name" type="text" class="form-control animate__animated animate__fadeInUp" name="name" required>
                             </div>
+        
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email <i class="fa fa-envelope"></i></label>
-                                <input type="email" class="form-control animate__animated animate__fadeInUp" id="email" name="email" required>
+                                <input id="email" type="email" class="form-control animate__animated animate__fadeInUp" id="email" name="email" required>
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password <i class="fa fa-lock"></i></label>
-                                <input type="password" class="form-control animate__animated animate__fadeInUp" id="password" name="password" required>
+                                <input id="password" type="password" class="form-control animate__animated animate__fadeInUp" id="password" name="password" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="country" class="form-label">Country<i class="fa fa-user"></i></label>
+                                <input id="country" type="text" class="form-control animate__animated animate__fadeInUp"  name="country" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="city" class="form-label">City<i class="fa fa-user"></i></label>
+                                <input id="city" type="text" class="form-control animate__animated animate__fadeInUp"  name="city" required>
                             </div>
                             <div class="mb-3">
                                 <label for="phone_number" class="form-label">Phone Number <i class="fa fa-phone"></i></label>
-                                <input type="text" class="form-control animate__animated animate__fadeInUp" id="phone_number" name="phone_number" required>
+                                <input id="phone_number" type="text" class="form-control animate__animated animate__fadeInUp" id="phone_number" name="phone_number" required>
                             </div>
                             <div class="mb-4">
                                 <label class="form-label">Register As</label>
