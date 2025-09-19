@@ -64,4 +64,17 @@ class User extends db_connection
         return $stmt->get_result()->fetch_assoc();
     }
 
+    public function loginUser($email,$password){
+        $user_details = $this->getUserByEmail($email);
+        if (!empty($user_details)){
+            $hashed_password = $user_details["customer_pass"];
+            $is_verified = password_verify($password,$hashed_password);
+            if ($is_verified){
+                return $user_details;
+
+            }
+            return null;
+        }
+        return null;
+    }
 }
