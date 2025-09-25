@@ -1,6 +1,7 @@
 <?php
 include './settings/core.php';
 $is_logged_in = check_login();
+$is_admin = is_admin();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,6 +41,10 @@ $is_logged_in = check_login();
 		} else {
 			echo '<a href="login/login.php" class="btn btn-sm btn-outline-secondary">Login</a>';
 		}
+
+		if ($is_admin) {
+			echo '<a href="#" class="btn btn-sm btn-outline-secondary">Admin View</a>';
+		} 
 		?>
 	</div>
 
