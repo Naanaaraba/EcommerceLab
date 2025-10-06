@@ -10,7 +10,7 @@ function fetch_categories() {
         type: 'GET',
         dataType: 'json',
         success: function (response) {
-            if (response.status === 'success') {
+            if (response) {
                 let categories = response.data;
                 let tbody = $("#cat_table tbody");
                 tbody.empty(); 
@@ -40,7 +40,7 @@ function fetch_categories() {
             } else {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Oops...',
+                    title: 'Oops...HEEHEHEHEHEHEEHE',
                     text: response.message,
                 });
             }
@@ -49,7 +49,7 @@ function fetch_categories() {
             console.log(xhr.responseText);
             Swal.fire({
                 icon: 'error',
-                title: 'Oops...',
+                title: 'Oops...HAHAHAHAHHA',
                 text: 'An error occurred! Please try again later.',
             });
         }
