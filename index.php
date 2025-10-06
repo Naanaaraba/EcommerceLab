@@ -34,12 +34,13 @@ $is_admin = is_admin();
 
 	<div class="menu-tray">
 		<span class="me-2">Menu:</span>
-		<a href="login/register.php" class="btn btn-sm btn-outline-primary">Register</a>
+		
 		<?php
 		if ($is_logged_in) {
 			echo '<a href="./login/logout.php" class="btn btn-sm btn-outline-secondary">Logout</a>';
 		} else {
 			echo '<a href="./login/login.php" class="btn btn-sm btn-outline-secondary">Login</a>';
+			echo '<a href="login/register.php" class="btn btn-sm btn-outline-primary">Register</a>';
 		}
 
 		if ($is_admin) {
