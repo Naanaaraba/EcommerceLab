@@ -13,15 +13,15 @@ if (!defined("SERVER")) {
 }
 
 if (!defined("USERNAME")) {
-    define("USERNAME", "root");
+    define("USERNAME", "naana.hope");
 }
 
 if (!defined("PASSWD")) {
-    define("PASSWD", "");
+    define("PASSWD", "Na6h01n1A");
 }
 
 if (!defined("DATABASE")) {
     // Use the database name from the provided SQL dump
-    define("DATABASE", "dbforlab");
+    define("DATABASE", "ecommerce_2025A_naana_hope");
 }
 ?>

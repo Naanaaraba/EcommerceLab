@@ -9,14 +9,16 @@ $response = array();
 
 require_once '../controllers/category_controller.php';
 $all_categories = fetch_category_ctr();
-  if(!empty($all_categories)){
+/*
+  if(($all_categories)){
     $response['status'] = 'success';
     $response['data'] = $all_categories;
   }else{
     $response['status'] = 'error';
     $response['data'] = [];
-  }
-
+  }*/
+    
+$response['data'] = $all_categories;
   echo json_encode($response);
 /*
 function display_category_fxn(){
