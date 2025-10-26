@@ -3,6 +3,7 @@ $(document).ready(function () {
     update_brand();
     fetch_brands();
     populate_categories();
+    build_brand_table();
 
 });
 
@@ -18,29 +19,39 @@ function populate_categories() {
 }
 
 function fetch_brands() {
-    $.ajax({
-        url: '../actions/fetch_brand_action.php',
-        type: 'GET',
-        dataType: 'json',
-        success: async function (response) {
-            if (response) {
-                let brands = response.data;
-                let tbody = $("#brand_table tbody");
-                tbody.empty();
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: '../actions/fetch_brand_action.php',
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                resolve(response.data);
+            },
+            error: function (xhr) {
+                reject(xhr.responseText);
+            }
+        });
+    })
+}
 
-                const categories = await fetch_categories();
+async function build_brand_table() {
+    let tbody = $("#brand_table tbody");
+    tbody.empty();
 
-                if (brands.length === 0) {
-                    tbody.append("<tr><td colspan='3'>No Brands found</td></tr>");
-                } else {
-                    brands.forEach(brand => {
+    const categories = await fetch_categories();
+    const brands = await fetch_brands();
+
+    if (brands.length === 0) {
+        tbody.append("<tr><td colspan='3'>No Brands found</td></tr>");
+    } else {
+        brands.forEach(brand => {
 
 
-                        let options = categories.map(cat =>
-                            `<option value="${cat.cat_id}" ${cat.cat_id === brand.cat_id ? "selected" : ""}>${cat.cat_name}</option>`
-                        ).join("");
+            let options = categories.map(cat =>
+                `<option value="${cat.cat_id}" ${cat.cat_id === brand.cat_id ? "selected" : ""}>${cat.cat_name}</option>`
+            ).join("");
 
-                        let row = `
+            let row = `
                             <tr>
                                 <td>${brand.brand_id}</td>
                                 <td>
@@ -51,33 +62,17 @@ function fetch_brands() {
                                             ${options}
                                         </select>
                                         <button type="submit">Update</button>
-                                    </form>
+                             
+                                     </form>
                                 </td>
                                 <td>
                                     <a onclick="delete_brand(${brand.brand_id})" class="delete-link" data-id="${brand.brand_id}">Delete</a>
                                 </td>
                             </tr>
                         `;
-                        tbody.append(row);
-                    });
-                }
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...HEEHEHEHEHEHEEHE',
-                    text: response.message,
-                });
-            }
-        },
-        error: function (xhr) {
-            console.log(xhr.responseText);
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...HAHAHAHAHHA',
-                text: 'An error occurred! Please try again later.',
-            });
-        }
-    });
+            tbody.append(row);
+        });
+    }
 }
 
 function delete_brand(brand_id) {
@@ -154,7 +149,7 @@ function add_brand() {
                         title: 'Success',
                         text: response.message,
                     }).then((result) => {
-                        fetch_brands()
+                        build_brand_table();
                     });
                 } else {
                     Swal.fire({
@@ -177,7 +172,6 @@ function add_brand() {
 }
 
 function update_brand() {
-
     $(document).on("submit", "#updateBrandForm", function (e) {
         e.preventDefault();
         let formData = $(this).serialize();
@@ -194,7 +188,7 @@ function update_brand() {
                         title: 'Updated!',
                         text: response.message,
                     }).then(() => {
-                        fetch_brands();
+                        build_brand_table();
                     });
                 } else {
                     Swal.fire({
@@ -216,4 +210,5 @@ function update_brand() {
     });
 
 }
+
 

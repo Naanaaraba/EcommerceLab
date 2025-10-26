@@ -33,6 +33,18 @@ class Brand extends db_connection
         return [];
     }
 
+    public function fetchBrandsByCategory($cat_id)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM brands b JOIN categories c ON b.cat_id = c.cat_id WHERE c.cat_id=?");
+        $stmt->bind_param('i', $cat_id);
+        $stmt->execute();
+        $results = $stmt->get_result();
+        if ($results->num_rows > 0) {
+            return $results->fetch_all(MYSQLI_ASSOC);
+        }
+        return [];
+    }
+
     public function deleteBrand($brand_id)
     {
         $stmt = $this->db->prepare("DELETE FROM brands WHERE brand_id = ?");

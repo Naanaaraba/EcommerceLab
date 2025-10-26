@@ -1,5 +1,5 @@
 <?php
-include_once'./settings/core.php';
+include_once './settings/core.php';
 $is_logged_in = check_login();
 $is_admin = is_admin();
 ?>
@@ -34,18 +34,20 @@ $is_admin = is_admin();
 
 	<div class="menu-tray">
 		<span class="me-2">Menu:</span>
-		
+
 		<?php
 		if ($is_logged_in) {
 			echo '<a href="./login/logout.php" class="btn btn-sm btn-outline-secondary">Logout</a>';
+			echo '<a href="./view/all_product.php" class="btn btn-sm btn-outline-primary">Products</a>';
 		} else {
 			echo '<a href="./login/login.php" class="btn btn-sm btn-outline-secondary">Login</a>';
-			echo '<a href="login/register.php" class="btn btn-sm btn-outline-primary">Register</a>';
+			echo '<a href="./login/register.php" class="btn btn-sm btn-outline-primary">Register</a>';
 		}
 
 		if ($is_admin) {
 			echo '<a href="./admin/category.php" class="btn btn-sm btn-outline-secondary">Categories</a>';
 			echo '<a href="./admin/brand.php" class="btn btn-sm btn-outline-secondary">Brands</a>';
+			echo '<a href="./admin/product.php" class="btn btn-sm btn-outline-secondary">Products</a>';
 		}
 		?>
 	</div>

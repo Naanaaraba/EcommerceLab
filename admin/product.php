@@ -13,7 +13,7 @@ if (!$is_logged_in || !$is_admin) {
 
 <head>
   <meta charset="UTF-8">
-  <title>Brand Management</title>
+  <title>Product Management</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -30,12 +30,13 @@ if (!$is_logged_in || !$is_admin) {
       margin: 15px 0;
     }
 
-    input[type="text"],
+    input,
+    textarea,
     select {
       padding: 6px;
       border: 1px solid #ccc;
       border-radius: 4px;
-      margin-right: 10px;
+      margin: 5px 10px 5px 0;
     }
 
     button {
@@ -69,50 +70,60 @@ if (!$is_logged_in || !$is_admin) {
       background: #f1f1f1;
     }
 
-    a.delete-link {
-      color: #dc3545;
-      text-decoration: none;
-      margin-left: 10px;
-    }
-
-    a.delete-link:hover {
-      text-decoration: underline;
+    img {
+      width: 60px;
+      height: auto;
     }
   </style>
 </head>
 
 <body>
-  <h1>Brand Management</h1>
+  <h1>Product Management</h1>
 
+  <h2 id="form_title">Add Product</h2>
+  <form id="product_form" enctype="multipart/form-data">
+    <input type="hidden" id="product_id" name="product_id">
 
-  <h2>Create Brand</h2>
-  <form id="brand_form">
-    <input id="brand_name" type="text" name="brand_name" placeholder="Brand name" required>
     <select id="category_id" name="category_id" required>
       <option value="">-- Select Category --</option>
     </select>
-    <button type="submit" name="create">Create</button>
+
+    <select id="brand_id" name="brand_id" required>
+      <option value="">-- Select Brand --</option>
+    </select><br>
+
+    <input type="text" id="product_title" name="product_title" placeholder="Product Title" required><br>
+    <input type="number" id="product_price" name="product_price" placeholder="Price" required><br>
+    <textarea id="product_desc" name="product_desc" placeholder="Description"></textarea><br>
+    <input type="text" id="product_keywords" name="product_keywords" placeholder="Keywords"><br>
+
+  
+    <input type="file" id="product_image" name="product_image" accept="image/*"><br>
+  
+
+    <button type="submit" id="save_product">Save Product</button>
   </form>
 
-
-  <h2>Your Brands</h2>
-  <table id="brand_table">
+  <h2>All Products</h2>
+  <table id="product_table">
     <thead>
       <tr>
         <th>ID</th>
-        <th>Brand & Category Name</th>
+        <th>Image</th>
+        <th>Title</th>
+        <th>Price</th>
+        <th>Category</th>
+        <th>Brand</th>
         <th>Actions</th>
       </tr>
     </thead>
-    <tbody>
-    </tbody>
+    <tbody></tbody>
   </table>
-
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="../js/category.js"></script>
-  <script src="../js/brand.js"></script>     
+  <script src="../js/brand.js"></script>
+  <script src="../js/product.js"></script>
 </body>
 
 </html>

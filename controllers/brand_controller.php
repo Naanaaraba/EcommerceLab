@@ -13,11 +13,18 @@
         return $brand->fetchBrands();
     }
 
+    function fetch_brands_by_category_ctr($cat_id)
+    {
+        $brand = new Brand();
+        return $brand->fetchBrandsByCategory($cat_id);
+    }
+
     function delete_brand_ctr($brand_id)
     {
         $brand =  new Brand();
         return $brand->deleteBrand($brand_id);
     }
+
     function update_brand_ctr($brand_id, $brand_name, $cat_id)
     {
         $brand =  new Brand();
