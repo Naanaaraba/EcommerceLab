@@ -126,7 +126,7 @@ function add_category() {
                         title: 'Success',
                         text: response.message,
                     }).then((result) => {
-                        fetch_categories()
+                        build_category_table()
                     });
                 } else {
                     Swal.fire({
