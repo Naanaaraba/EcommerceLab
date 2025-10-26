@@ -1,62 +1,88 @@
 $(document).ready(function () {
-    add_category();
-    update_category();
-    build_category_table();
+    add_brand();
+    update_brand();
+    fetch_brands();
+    populate_categories();
+
 });
 
-function fetch_categories() {
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            url: '../actions/fetch_category_action.php',
-            type: 'GET',
-            dataType: 'json',
-            success: function (response) {
-                resolve(response.data);
-            },
-            error: function (xhr) {
-                reject(xhr.responseText);
-            }
-        });
+function populate_categories() {
+    const categorySelect = $('#category_id');
+    categorySelect.empty().append('<option value="">-- Select Category --</option>');
+    fetch_categories().then((categoryList) => {
+        categoryList.map((cat) => {
+            categorySelect.append(`<option value="${cat.cat_id}">${cat.cat_name}</option>`);
+        })
     })
+
 }
 
-function build_category_table() {
-    let tbody = $("#cat_table tbody");
-    tbody.empty();
+function fetch_brands() {
+    $.ajax({
+        url: '../actions/fetch_brand_action.php',
+        type: 'GET',
+        dataType: 'json',
+        success: async function (response) {
+            if (response) {
+                let brands = response.data;
+                let tbody = $("#brand_table tbody");
+                tbody.empty();
 
-    fetch_categories().then((categories) => {
-        if (categories instanceof Array) {
-            if (categories.length === 0) {
-                tbody.append("<tr><td colspan='3'>No categories found</td></tr>");
-            } else {
-                categories.forEach(cat => {
-                    let row = `
+                const categories = await fetch_categories();
+
+                if (brands.length === 0) {
+                    tbody.append("<tr><td colspan='3'>No Brands found</td></tr>");
+                } else {
+                    brands.forEach(brand => {
+
+
+                        let options = categories.map(cat =>
+                            `<option value="${cat.cat_id}" ${cat.cat_id === brand.cat_id ? "selected" : ""}>${cat.cat_name}</option>`
+                        ).join("");
+
+                        let row = `
                             <tr>
-                                <td>${cat.cat_id}</td>
+                                <td>${brand.brand_id}</td>
                                 <td>
-                                    <form id="updateCategoryForm" >
-                                        <input type="hidden" name="cat_id" id="cat_id" value="${cat.cat_id}">
-                                        <input type="text" name="cat_name" id="edit_cat_name" value="${cat.cat_name}" required>
+                                    <form id="updateBrandForm" >
+                                        <input type="hidden" name="brand_id" id="brand_id" value="${brand.brand_id}">
+                                        <input type="text" name="brand_name" id="edit_brand_name" value="${brand.brand_name}" required>
+                                        <select name="category_id">
+                                            ${options}
+                                        </select>
                                         <button type="submit">Update</button>
                                     </form>
                                 </td>
                                 <td>
-                                    <a onclick="delete_category(${cat.cat_id})" class="delete-link" data-id="${cat.cat_id}">Delete</a>
+                                    <a onclick="delete_brand(${brand.brand_id})" class="delete-link" data-id="${brand.brand_id}">Delete</a>
                                 </td>
                             </tr>
                         `;
-                    tbody.append(row);
+                        tbody.append(row);
+                    });
+                }
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...HEEHEHEHEHEHEEHE',
+                    text: response.message,
                 });
             }
-        } else {
-            return '<tr>An error occurred while fetching the categories</tr>';
+        },
+        error: function (xhr) {
+            console.log(xhr.responseText);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...HAHAHAHAHHA',
+                text: 'An error occurred! Please try again later.',
+            });
         }
-    })
+    });
 }
 
-function delete_category(cat_id) {
+function delete_brand(brand_id) {
     Swal.fire({
-        title: 'Are you sure you want to delete this category',
+        title: 'Are you sure you want to delete this brand',
         icon: 'info',
         confirmButtonText: 'Delete',
         showCancelButton: true
@@ -64,7 +90,7 @@ function delete_category(cat_id) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: '../actions/delete_category_action.php?cat_id=' + cat_id,
+                url: '../actions/delete_brand_action.php?brand_id=' + brand_id,
                 type: 'GET',
                 dataType: 'json',
                 success: function (response) {
@@ -96,14 +122,15 @@ function delete_category(cat_id) {
         }
     })
 }
-function add_category() {
-    $('#category_form').submit(function (e) {
+function add_brand() {
+    $('#brand_form').submit(function (e) {
         e.preventDefault();
 
 
-        cat_name = $('#cat_name').val();
+        brand_name = $('#brand_name').val();
+        category_id = $('#category_id').val();
 
-        if (cat_name == '') {
+        if (brand_name == '') {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -113,10 +140,11 @@ function add_category() {
             return;
         }
         $.ajax({
-            url: '../actions/add_category_action.php',
+            url: '../actions/add_brand_action.php',
             type: 'POST',
             data: {
-                cat_name: cat_name
+                brand_name: brand_name,
+                category_id: category_id
             },
             success: function (response) {
                 if (response.status === 'success') {
@@ -126,7 +154,7 @@ function add_category() {
                         title: 'Success',
                         text: response.message,
                     }).then((result) => {
-                        fetch_categories()
+                        fetch_brands()
                     });
                 } else {
                     Swal.fire({
@@ -148,14 +176,14 @@ function add_category() {
     });
 }
 
-function update_category() {
+function update_brand() {
 
-    $(document).on("submit", "#updateCategoryForm", function (e) {
+    $(document).on("submit", "#updateBrandForm", function (e) {
         e.preventDefault();
         let formData = $(this).serialize();
 
         $.ajax({
-            url: '../actions/update_category_action.php',
+            url: '../actions/update_brand_action.php',
             type: 'POST',
             data: formData,
             dataType: 'json',
@@ -166,7 +194,7 @@ function update_category() {
                         title: 'Updated!',
                         text: response.message,
                     }).then(() => {
-                        fetch_categories();
+                        fetch_brands();
                     });
                 } else {
                     Swal.fire({
@@ -188,3 +216,4 @@ function update_category() {
     });
 
 }
+

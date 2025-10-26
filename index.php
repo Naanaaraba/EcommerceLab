@@ -45,6 +45,7 @@ $is_admin = is_admin();
 
 		if ($is_admin) {
 			echo '<a href="./admin/category.php" class="btn btn-sm btn-outline-secondary">Categories</a>';
+			echo '<a href="./admin/brand.php" class="btn btn-sm btn-outline-secondary">Brands</a>';
 		}
 		?>
 	</div>
