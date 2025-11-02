@@ -31,6 +31,12 @@ function add_image_ctr($product_id, $image_url)
     return $product->saveImage($product_id, $image_url);
 }
 
+function edit_image_ctr($product_id, $image_url)
+{
+
+    $product = new Product();
+    return $product->editImage($product_id, $image_url);
+}
 
 function view_single_product_ctr($product_id)
 {

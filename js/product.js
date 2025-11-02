@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
   
-    function fetch_categories() {
+    function fetch_product_categories() {
         return new Promise((resolve, reject) => {
             $.ajax({
                 url: '../actions/fetch_category_action.php',
@@ -20,7 +20,8 @@ $(document).ready(function () {
     function loadCategories() {
         const categorySelect = $('#category_id');
         categorySelect.empty().append('<option value="">-- Select Category --</option>');
-        fetch_categories().then((categoryList) => {
+        fetch_product_categories().then((categoryList) => {
+            console.log(categoryList)
             categoryList.map((cat) => {
                 categorySelect.append(`<option value="${cat.cat_id}">${cat.cat_name}</option>`);
             });
@@ -95,6 +96,11 @@ $(document).ready(function () {
         });
     }
 
+    $('#product_image').on('change',function(e){
+        const image_label = document.querySelector(".file-input-label");
+        let label_text = this.value.split('C:\\fakepath\\');
+        image_label.innerHTML= label_text[1];
+    })
    
     $('#product_form').on('submit', function (e) {
         e.preventDefault();
@@ -108,6 +114,9 @@ $(document).ready(function () {
         const actionUrl = $('#product_id').val()
             ? '../actions/update_product_action.php'
             : '../actions/add_product_action.php';
+        const actionimageUrl = $('#product_id').val()
+            ? '../actions/edit_product_image_action.php'
+            : '../actions/upload_product_image_action.php';
 
         const formData = $(this).serialize();
 
@@ -121,13 +130,12 @@ $(document).ready(function () {
                 if (response.status === 'success') {
                     const productId = response.product_id || $('#product_id').val();
 
-                    
                     const imageData = new FormData();
                     imageData.append('product_id', productId);
                     imageData.append('product_image', fileInput.files[0]);
 
                     $.ajax({
-                        url: '../actions/upload_product_image_action.php',
+                        url: actionimageUrl,
                         type: 'POST',
                         data: imageData,
                         processData: false,

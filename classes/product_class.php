@@ -92,6 +92,17 @@ class Product extends db_connection
         }
         return false;
     }
+    public function editImage($product_id, $image_url)
+    {
+        $query = "UPDATE product_images SET image_url = ? WHERE product_id = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('si', $image_url,$product_id);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;
+    }
 
     public function view_single_product($product_id)
     {
@@ -165,3 +176,4 @@ class Product extends db_connection
         return ($results->num_rows > 0) ? $results->fetch_all(MYSQLI_ASSOC) : [];
     }
 }
+

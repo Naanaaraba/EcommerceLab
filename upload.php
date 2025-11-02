@@ -17,17 +17,17 @@
     <h2>File Upload</h2>
     <?php
     function sanitizeFileName($filename) {
-        // Remove any non-alphanumeric characters except dots, hyphens, and underscores
+        
         $filename = preg_replace('/[^a-zA-Z0-9\.\-_]/', '', $filename);
-        // Prevent directory traversal
+       
         $filename = basename($filename);
         return $filename;
     }
 
     $upload_dir = "uploads/";
-    $max_file_size = 64 * 1024 * 1024; // 64MB
+    $max_file_size = 64 * 1024 * 1024;
 
-    // Create upload directory if it doesn't exist
+    
     if (!is_dir($upload_dir)) {
         mkdir($upload_dir, 0755, true);
     }
@@ -35,7 +35,7 @@
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["uploadedFile"])) {
         $file = $_FILES["uploadedFile"];
 
-        // Check for upload errors
+        
         if ($file["error"] !== UPLOAD_ERR_OK) {
             $upload_errors = [
                 UPLOAD_ERR_INI_SIZE => "File is too large (exceeds server limit)",
@@ -51,7 +51,7 @@
                 (isset($upload_errors[$file["error"]]) ? $upload_errors[$file["error"]] : "Unknown error") .
                 "</p>";
         } else {
-            // Sanitize filename
+           
             $original_filename = $file["name"];
             $filename = sanitizeFileName($original_filename);
 
@@ -60,18 +60,18 @@
             } else {
                 $target_file = $upload_dir . $filename;
 
-                // Check file size against our limit
+               
                 if ($file["size"] > $max_file_size) {
                     echo "<p class='error'>Sorry, your file is too large. Maximum size allowed is " .
                          number_format($max_file_size / (1024 * 1024), 0) . "MB.</p>";
                 } else {
-                    // Check if file already exists
+                    
                     if (file_exists($target_file)) {
                         echo "<p class='error'>Sorry, file already exists. Please rename your file or delete the existing one first.</p>";
                     } else {
-                        // Attempt to move uploaded file
+                       
                         if (move_uploaded_file($file["tmp_name"], $target_file)) {
-                            // Set proper file permissions
+                            
                             chmod($target_file, 0644);
                             echo "<p class='success'>File " . htmlspecialchars($filename) . " uploaded successfully.</p>";
                         } else {
@@ -95,7 +95,7 @@
         if (is_dir($upload_dir)) {
             $files = array_diff(scandir($upload_dir), ['.', '..']);
             if (count($files) > 0) {
-                // Sort files by modification time (newest first)
+                
                 usort($files, function($a, $b) use ($upload_dir) {
                     return filemtime($upload_dir . $b) - filemtime($upload_dir . $a);
                 });
