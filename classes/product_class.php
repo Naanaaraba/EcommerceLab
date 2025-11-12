@@ -10,10 +10,10 @@ class Product extends db_connection
         parent::db_connect();
     }
 
-    public function addProduct($product_cat, $product_brand, $product_title, $product_price, $product_desc, $product_keywords)
+    public function addProduct($product_cat, $product_brand, $product_title, $product_price, $product_desc, $product_keywords, $product_stock)
     {
-        $stmt = $this->db->prepare("INSERT INTO products (product_cat, product_brand, product_title, product_price, product_desc, product_keywords) VALUES (?,?,?,?,?,?)");
-        $stmt->bind_param("iissss", $product_cat, $product_brand, $product_title, $product_price, $product_desc, $product_keywords);
+        $stmt = $this->db->prepare("INSERT INTO products (product_cat, product_brand, product_title, product_price, product_desc, product_keywords, product_stock) VALUES (?,?,?,?,?,?,?)");
+        $stmt->bind_param("iissssi", $product_cat, $product_brand, $product_title, $product_price, $product_desc, $product_keywords,$product_stock);
         if ($stmt->execute()) {
             return $this->db->insert_id;
         }
@@ -24,7 +24,7 @@ class Product extends db_connection
     {
         $stmt = $this->db->prepare(
             "SELECT p.product_id, 
-        p.product_title, p.product_price, pi.image_url, b.brand_id, c.cat_id,
+        p.product_title, p.product_price, p.product_stock, pi.image_url, b.brand_id, c.cat_id,
         b.brand_name, c.cat_name
         FROM products p 
         LEFT JOIN categories c ON p.product_cat = c.cat_id 
@@ -175,5 +175,42 @@ class Product extends db_connection
 
         return ($results->num_rows > 0) ? $results->fetch_all(MYSQLI_ASSOC) : [];
     }
+
+    public function update_product_stock($product_id, $quantity) {
+
+    $sql = "UPDATE products 
+            SET stock = stock - ? 
+            WHERE product_id = ? AND stock >= ?";
+
+    $stmt = $this->db->prepare($sql);
+    
+    if (!$stmt) {
+        return [
+            'status' => 'error',
+            'message' => 'Failed to prepare statement: ' . $this->db->error
+        ];
+    }
+    $stmt->bind_param("iii", $quantity, $product_id, $quantity);
+
+    if ($stmt->execute()) {
+        if ($stmt->affected_rows > 0) {
+            return [
+                'status' => 'success',
+                'message' => 'Stock updated successfully.'
+            ];
+        } else {
+            return [
+                'status' => 'error',
+                'message' => 'Not enough stock available or invalid product ID.'
+            ];
+        }
+    } else {
+        return [
+            'status' => 'error',
+            'message' => 'Execution failed: ' . $stmt->error
+        ];
+    }
+}
+
 }
 

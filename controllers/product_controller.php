@@ -1,16 +1,16 @@
 <?php
 require_once '../classes/product_class.php';
 
-function add_product_ctr($product_cat, $product_brand, $product_title, $product_price, $product_desc, $product_keywords)
+function add_product_ctr($product_cat, $product_brand, $product_title, $product_price, $product_desc, $product_keywords, $product_stock)
 {
     $product = new Product();
-    return $product->addProduct($product_cat, $product_brand, $product_title, $product_price, $product_desc, $product_keywords);
+    return $product->addProduct($product_cat, $product_brand, $product_title, $product_price, $product_desc, $product_keywords,$product_stock);
 }
 
-function update_product_ctr($product_id, $product_cat, $product_brand, $product_title, $product_price, $product_desc, $product_keywords)
+function update_product_ctr($product_id, $product_cat, $product_brand, $product_title, $product_price, $product_desc, $product_keywords,$product_stock)
 {
     $product = new Product();
-    return $product->updateProduct($product_id, $product_cat, $product_brand, $product_title, $product_price, $product_desc, $product_keywords);
+    return $product->updateProduct($product_id, $product_cat, $product_brand, $product_title, $product_price, $product_desc, $product_keywords, $product_stock);
 }
 
 function fetch_product_ctr()
@@ -63,4 +63,10 @@ function filter_products_by_brand_ctr($brand_id)
 {
     $product = new Product();
     return $product->filter_products_by_brand($brand_id);
+}
+
+function update_product_stock_ctr($product_id, $quantity)
+{
+ $product = new Product();
+    return $product->update_product_stock($product_id, $quantity);
 }

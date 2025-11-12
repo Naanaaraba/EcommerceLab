@@ -666,6 +666,11 @@ table tbody tr:hover td,
             <label for="product_price" class="form-label">Price</label>
             <input type="number" id="product_price" name="product_price" class="form-control" placeholder="Enter price" step="0.01" required>
           </div>
+
+        </div>
+        <div class="form-group">
+          <label for="product_stock" class="form-label">Stock</label>
+          <input type="number" id="product_stock" name="stock" class="form-control" placeholder="Enter Stock Number" required>
         </div>
 
         <div class="form-group">
@@ -701,6 +706,7 @@ table tbody tr:hover td,
               <th>Image</th>
               <th>Title</th>
               <th>Price</th>
+              <th>Stock</th>
               <th>Category</th>
               <th>Brand</th>
               <th>Actions</th>

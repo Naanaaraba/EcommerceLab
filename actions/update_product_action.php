@@ -14,9 +14,10 @@ $desc = $_POST['product_desc'];
 $keywords = $_POST['product_keywords'];
 $cat_id = $_POST['category_id'];
 $brand_id = $_POST['brand_id'];
+$stock = $_POST['stock'];
 
 
-$success = update_product_ctr($product_id, $cat_id, $brand_id, $title, $price, $desc, $keywords);
+$success = update_product_ctr($product_id, $cat_id, $brand_id, $title, $price, $desc, $keywords, $stock);
 
 if ($success) {
     $response['status'] = 'success';
